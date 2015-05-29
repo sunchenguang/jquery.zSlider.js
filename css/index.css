@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#zSlider img {
+    width: 800px;
+    height: 500px;
+}
+
+#zSlider ul {
+    list-style: none;
+}
