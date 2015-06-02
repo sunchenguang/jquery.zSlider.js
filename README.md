@@ -1,7 +1,7 @@
 # jquery.zSlider.js
 
 ## Getting Started
-This plugin requires jQuery.This is from SSH;
+This plugin requires jQuery.This is from home SSH;
 ```js
 <script src="jquery.min.js"></script>
 ```
