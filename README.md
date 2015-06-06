@@ -56,6 +56,9 @@ $('#zSlider').Zslider({
 
 ## Release History
 2015-6-6&nbsp;&nbsp;&nbsp;v0.0.2&nbsp;&nbsp;&nbsp; Optimization
+```html
+<br>
+```
 2015-5-29&nbsp;&nbsp;&nbsp;v0.0.1&nbsp;&nbsp;&nbsp; init
 
 ## License
