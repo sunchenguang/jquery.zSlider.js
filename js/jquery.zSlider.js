@@ -2,6 +2,7 @@
 (function($, window, document, undefined) {
     //构造函数定义对象属性
     var zSlider = function(element, options) {
+        //Z.$element是传人的jq对象 $('selector')
         this.$element = element;
         this.options = $.extend(true, {
             animate: 'roll',
@@ -9,7 +10,7 @@
             event: "mouseover",
             duration: 3000, //播放频率
             speed: 500, //滚动速度
-            auto: true//是否自动播放
+            auto: true //是否自动播放
         }, options);
     };
     //原型定义对象方法bind
@@ -37,22 +38,31 @@
                 'position': 'relative',
                 'margin': '0 auto',
                 'width': this.width,
+                'height': this.height,
                 'overflow': 'hidden'
             });
             //设置图片大包装盒
             this.img_wrap.css({
-                'display': '-webkit-box',
-                'box-orient': 'horizontal',
+                'display': '-webkit-box'
             });
             //设置所有a标签为block
             this.a.css({
                 'display': 'block'
             });
-            //如果为水平滚动，设置大包装盒的宽度，图片小包装盒
+            //设置所有img为block，为了消除包裹img的块级元素缝隙（超过img高度）
+            this.imgs.css({
+                'display': 'block'
+            });
+            //如果为水平滚动，设置图片大包装盒
             if (this.options.direction === 'horizontal' && this.options.animate === 'roll') {
-                this.img_wrap.css({});
-                this.img_box.css({});
-                this.imgs.css({});
+                this.img_wrap.css({
+                    'box-orient': 'horizontal'
+                });
+            } else if (this.options.direction === 'vertical') {
+                //为垂直滚动
+                this.img_wrap.css({
+                    'box-orient': 'vertical'
+                });
             }
             //生成导航
             this.createNav();
@@ -62,7 +72,6 @@
             //绑定事件，切换图片
             this.on(this.options.event);
         },
-        // 编写方法 生成导航区
         //向zSlider的原型中添加生成导航的createNav方法
         createNav: function() {
             this.$element.append('<div class="nav"></div>');
@@ -72,24 +81,24 @@
                 this.$nav.append('<span></span>');
             }
             this.$nav.css({
-                'position'         : 'absolute',
-                'z-index'          : 3,
-                'left'             : '50%',
-                'bottom'           : '20px',
-                'padding'          : '5px',
-                'border-radius'    : '10px',
-                'background-color' : ' rgba(255,255,255,0.3)',
-                'display'          : '-webkit-box',
-                'transform'        : 'translate(-50%,0)'
+                'position': 'absolute',
+                'z-index': 3,
+                'left': '50%',
+                'bottom': '20px',
+                'padding': '5px',
+                'border-radius': '10px',
+                'background-color': ' rgba(255,255,255,0.3)',
+                'display': '-webkit-box',
+                'transform': 'translate(-50%,0)'
             });
             this.$nav.find('span').css({
-                'display'          : 'block',
-                'background-color' : '#fff',
-                'cursor'           : 'pointer',
-                'margin'           : '2px',
-                'width'            : '14px',
-                'height'           : '14px',
-                'border-radius'    : '50%'
+                'display': 'block',
+                'background-color': '#fff',
+                'cursor': 'pointer',
+                'margin': '2px',
+                'width': '14px',
+                'height': '14px',
+                'border-radius': '50%'
             });
             this.$nav.find('span:first').addClass('on').css({
                 'background-color': 'orange'
@@ -97,11 +106,12 @@
         },
         //自动播放方法
         play: function() {
-            //setInterval中的this是指向window对象，所以也要储存起来，以便在setInterval中使用
+            //此时的this指的zSlider实例对象
             var Z = this;
             if (this.$element.timer) {
                 clearInterval(this.$element.timer);
             }
+            //setInterval中function里的this是指向window对象，要使用外层的this则要用外层变量存储的this
             this.$element.timer = setInterval(function() {
                 //Z.index指图片的索引序号
                 Z.index++;
@@ -123,25 +133,27 @@
         },
         //图片滚动动画
         roll: function() {
+            //这里的this指zSlider实例对象
             var Z = this;
             //如果是垂直滚动
-            if (Z.options.direction == 'vertical') {
-                $(Z.img_wrap).animate({
-                    top: -Z.height * Z.index + 'px'
-                }, Z.options.speed);
+            if (this.options.direction == 'vertical') {
+                $(this.img_wrap).animate({
+                    marginTop: -(this.height * this.index) + 'px'
+                }, this.options.speed);
             } else {
                 //水平滚动
-                $(Z.img_wrap).animate({
-                    marginLeft: -(Z.width * Z.index) + 'px'
-                }, Z.options.speed);
+                $(this.img_wrap).animate({
+                    marginLeft: -(this.width * this.index) + 'px'
+                }, this.options.speed);
             }
         },
         //绑定图片切换事件
         on: function(type) {
                 var Z = this,
                     span = Z.$nav.find('span');
+                //给每个导航点绑定事件
                 span.on(type, function() {
-                    //获取当前导航点索引序号传给Z.index
+                    //这里的this指的是选中的span这个DOM元素，获取当前导航点索引序号传给Z.index
                     Z.index = $(this).index();
                     span.removeClass('on').css({
                         'background-color': '#fff'
@@ -156,18 +168,18 @@
                     //清除定时器
                     clearInterval(Z.$element.timer);
                 });
+                //给导航条绑定mouseout事件
                 this.$nav.on('mouseout', function() {
                     if (Z.options) {
                         Z.play();
                     }
                 });
             }
-            //Z是指实例  Z.$element则是jq对象 $('#zSlider')
     };
     $.fn.zSlider = function(options) {
-        //this为jq对象  $('selector')  新建zSlider对象
+        //此时的this为jq对象  $('selector')
         var obj = new zSlider(this, options);
-        //对象初始化
+        //对象初始化 obj为zSlider对象
         obj.init();
         //返回jQuery选择器的集合，以便链式调用
         return this;
