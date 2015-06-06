@@ -15,7 +15,7 @@
     };
     //原型定义对象方法bind
     zSlider.prototype = {
-        //初始化数据
+        //初始化 zSlider对象属性 生成导航并绑定事件
         init: function() {
             //这里的this指zSlider这个对象或者说是zSlider实例
             this.index = 0; //开始的索引
@@ -70,10 +70,10 @@
             if (this.options.auto === true){
                 this.play();
             }
-            //绑定事件，切换图片
+            //导航绑定事件，切换图片
             this.on(this.options.event);
         },
-        //向zSlider的原型中添加生成导航的createNav方法
+        //向zSlider的原型中添加生成导航的createNav方法（生成导航）
         createNav: function() {
             this.$element.append('<div class="nav"></div>');
             this.$nav = $('.nav');
@@ -105,7 +105,7 @@
                 'background-color': 'orange'
             });
         },
-        //自动播放方法
+        //自动播放方法，(导航点颜色更改，执行Z.roll()滚动方法)
         play: function() {
             //此时的this指的zSlider实例对象
             var Z = this;
@@ -120,7 +120,7 @@
                 if (Z.index >= Z.number) {
                     Z.index = 0;
                 }
-                //移除原先的导航点
+                //移除原先的导航点颜色
                 Z.$nav.find('span').removeClass('on').css({
                     'background-color': '#fff'
                 });
@@ -132,7 +132,7 @@
                 Z[Z.options.animate]();
             }, this.options.duration);
         },
-        //图片滚动动画
+        //图片滚动动画(滚动图片)
         roll: function() {
             //这里的this指zSlider实例对象
             var Z = this;
@@ -167,7 +167,7 @@
                     //图片动画 Z[roll]()  Z.roll()
                     Z[Z.options.animate]();
                     //清除定时器
-                    clearInterval(Z.$element.timer);
+                   // clearInterval(Z.$element.timer);
                 });
                 //给导航条绑定mouseout事件
                 this.$nav.on('mouseout', function() {
