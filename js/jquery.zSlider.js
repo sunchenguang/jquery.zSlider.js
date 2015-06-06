@@ -67,8 +67,9 @@
             //生成导航
             this.createNav();
             //是否自动播放
-            if (this.options)
+            if (this.options.auto === true){
                 this.play();
+            }
             //绑定事件，切换图片
             this.on(this.options.event);
         },
@@ -170,7 +171,7 @@
                 });
                 //给导航条绑定mouseout事件
                 this.$nav.on('mouseout', function() {
-                    if (Z.options) {
+                    if (Z.options.auto === true) {
                         Z.play();
                     }
                 });
