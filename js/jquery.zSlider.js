@@ -67,7 +67,7 @@
             //生成导航
             this.createNav();
             //是否自动播放
-            if (this.options.auto === true){
+            if (this.options.auto === true) {
                 this.play();
             }
             //导航绑定事件，切换图片
@@ -135,47 +135,56 @@
         //图片滚动动画(滚动图片)
         roll: function() {
             //这里的this指zSlider实例对象
-            var Z = this;
+            var Z = this,
+                transY = -(this.height * this.index),
+                transX = -(this.width * this.index);
             //如果是垂直滚动
             if (this.options.direction == 'vertical') {
-                $(this.img_wrap).animate({
-                    marginTop: -(this.height * this.index) + 'px'
-                }, this.options.speed);
+                //传统的改变margin或top的方法
+                // $(this.img_wrap).animate({
+                //     marginTop: -(this.height * this.index) + 'px'
+                // }, this.options.speed);
+                //使用css3动画的方式，性能更优
+                $(this.img_wrap).css({
+                    'transition': 'transform ' + this.options.speed + 'ms',
+                    'transform': 'translateY(' + transY + 'px)'
+                });
             } else {
                 //水平滚动
-                $(this.img_wrap).animate({
-                    marginLeft: -(this.width * this.index) + 'px'
-                }, this.options.speed);
+                $(this.img_wrap).css({
+                    'transition': 'transform ' + this.options.speed + 'ms',
+                    'transform': 'translateX(' + transX + 'px)'
+                });
             }
         },
         //绑定图片切换事件
         on: function(type) {
-                var Z = this,
-                    span = Z.$nav.find('span');
-                //给每个导航点绑定事件
-                span.on(type, function() {
-                    //这里的this指的是选中的span这个DOM元素，获取当前导航点索引序号传给Z.index
-                    Z.index = $(this).index();
-                    span.removeClass('on').css({
-                        'background-color': '#fff'
-                    });
-                    $(this).addClass('on').css({
-                        'background-color': 'orange'
-                    });
-                    //停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
-                    $(Z.img_wrap).stop();
-                    //图片动画 Z[roll]()  Z.roll()
-                    Z[Z.options.animate]();
-                    //清除定时器
-                   // clearInterval(Z.$element.timer);
+            var Z = this,
+                span = Z.$nav.find('span');
+            //给每个导航点绑定事件
+            span.on(type, function() {
+                //这里的this指的是选中的span这个DOM元素，获取当前导航点索引序号传给Z.index
+                Z.index = $(this).index();
+                span.removeClass('on').css({
+                    'background-color': '#fff'
                 });
-                //给导航条绑定mouseout事件
-                this.$nav.on('mouseout', function() {
-                    if (Z.options.auto === true) {
-                        Z.play();
-                    }
+                $(this).addClass('on').css({
+                    'background-color': 'orange'
                 });
-            }
+                //停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
+                $(Z.img_wrap).stop();
+                //图片动画 Z[roll]()  Z.roll()
+                Z[Z.options.animate]();
+                //清除定时器
+                // clearInterval(Z.$element.timer);
+            });
+            //给导航条绑定mouseout事件
+            this.$nav.on('mouseout', function() {
+                if (Z.options.auto === true) {
+                    Z.play();
+                }
+            });
+        }
     };
     $.fn.zSlider = function(options) {
         //此时的this为jq对象  $('selector')
