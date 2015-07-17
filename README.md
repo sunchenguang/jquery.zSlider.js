@@ -55,6 +55,7 @@ $('#zSlider').Zslider({
 
 
 ## Release History
+2015-7-17&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp; Optimization
 2015-6-6&nbsp;&nbsp;&nbsp;v0.0.2&nbsp;&nbsp;&nbsp; Optimization
 ```html
 <br>
