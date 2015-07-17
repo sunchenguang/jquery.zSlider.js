@@ -18,14 +18,14 @@ import the plugin
 ### Overview
 
 ```js
-$('#zSlider').Zslider(options);
+$('#zSlider').zSlider(options);
 ```
 
 ### Options
 
 ### Usage Examples
 ```js
-$('#zSlider').Zslider({
+$('#zSlider').zSlider({
 	direction:'vertical',
     event:'click',
     auto:false,
@@ -56,6 +56,9 @@ $('#zSlider').Zslider({
 
 ## Release History
 2015-7-17&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp; Optimization
+```html
+<br>
+```
 2015-6-6&nbsp;&nbsp;&nbsp;v0.0.2&nbsp;&nbsp;&nbsp; Optimization
 ```html
 <br>
