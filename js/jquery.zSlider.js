@@ -3,6 +3,8 @@
     //构造函数定义对象属性
     var zSlider = function(element, options) {
         //_this.$element是传人的jq对象 $('selector')
+        // var self = this;
+        // console.log(self);
         this.$element = element;
         this.index = 0; //开始的索引
         //最外层容器宽度
@@ -19,6 +21,8 @@
         this.a = this.$element.find('a');
         //图片数量
         this.number = this.imgs.length;
+        //是否可自动播放 标识
+        //  this.canAutoPlay = true;
         //options
         this.options = $.extend(true, {
             animate: 'roll',
@@ -35,18 +39,22 @@
         init: function() {
             //这里的this指zSlider对象
             //设置图片大包装盒
+            var _this = this;
             this.img_wrap.css({
-                'display': '-webkit-box',
-                'transition': 'transform ' + this.options.speed + 'ms'
+                display: '-webkit-box',
+                transition: 'transform ' + this.options.speed + 'ms'
             });
             //设置所有a标签为block，高度，使图片宽高100%时等于最外层容器宽高
             this.a.css({
-                'display': 'block',
+                display: 'block',
                 height: this.height
             });
             //设置所有img为block，为了消除包裹img的块级元素缝隙（超过img高度）
             this.imgs.css({
-                'display': 'block'
+                display: 'block',
+                width:'100%',
+                height:'100%'
+
             });
             //如果为水平滚动，设置图片大包装盒
             if (this.options.direction === 'hori_thisontal' && this.options.animate === 'roll') {
@@ -64,6 +72,12 @@
             //是否自动播放
             if (this.options.auto === true) {
                 this.autoPlay();
+                //给zSlider最外层容器绑定hover事件
+                this.$element.hover(function() {
+                    clearInterval(_this.timer);
+                }, function() {
+                    _this.autoPlay();
+                });
             }
             //导航绑定事件，切换图片
             this.on(this.options.event);
@@ -85,11 +99,8 @@
         autoPlay: function() {
             //此时的this指的zSlider对象
             var _this = this;
-            if (this.$element.timer) {
-                clearInterval(this.$element.timer);
-            }
             //setInterval中function里的this是指向window对象，要使用外层的this则要用_this
-            this.$element.timer = setInterval(function() {
+            this.timer = setInterval(function() {
                 //_this.index指图片的索引序号
                 _this.index++;
                 //如果索引大于或者等于图片总数
@@ -111,10 +122,7 @@
                 transX = -(this.width * this.index);
             //如果是垂直滚动
             if (this.options.direction == 'vertical') {
-                //传统的改变margin或top的方法
-                // $(this.img_wrap).animate({
-                //     marginTop: -(this.height * this.index) + 'px'
-                // }, this.options.speed);
+                //传统的是改变marginTop,marginLeft或top。left的方法
                 //使用css3动画的方式，性能更优
                 this.img_wrap.css({
                     'transform': 'translateY(' + transY + 'px)'
@@ -140,14 +148,6 @@
                 $(_this.img_wrap).stop();
                 //图片动画 _this[roll]()  _this.roll()
                 _this[_this.options.animate]();
-                //清除定时器
-                // clearInterval(_this.$element.timer);
-            });
-            //给导航条绑定mouseout事件
-            this.nav.on('mouseout', function() {
-                if (_this.options.auto === true) {
-                    _this.autoPlay();
-                }
             });
         }
     };
