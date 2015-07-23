@@ -74,15 +74,13 @@ require(['jquery', 'zSlider'], function($, z) {
     });
 
 });
-```js
+```
 
 
 ## Release History
-
-2015-7-23&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp;
-增加了zSlider模块，require.js，main.js和zSlider_v2.html
+2015-7-23&nbsp;&nbsp;&nbsp;v0.0.4&nbsp;&nbsp;&nbsp; 模块化
 ```html
-<br>
+增加了zSlider模块，require.js，main.js和zSlider_v2.html
 ```
 2015-7-17&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp; Optimization
 ```html
