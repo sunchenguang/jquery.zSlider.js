@@ -49,12 +49,41 @@ $('#zSlider').zSlider({
 	auto: true
 }
 ```
+### 添加requirejs，模块化写法
+```js
+在主模块中写如下代码
+require.config({
+    paths: {
+        'jquery': 'jquery.min'
+    }
+});
+require(['jquery', 'zSlider'], function($, z) {
+    //$('#zSlider').zSlider({
+    //     direction: 'vertical', //滚动方向,vertical重直滚动,horizontal水平滚动
+    //     event: "click",
+    //     duration: 3000, //播放频率
+    //     speed: 500, //滚动速度
+    //     auto: true //是否自动播放
+    // });
+    var slider = new z.zSlider($('#zSlider'), {
+        direction: 'vertical', //滚动方向,vertical重直滚动,horizontal水平滚动
+        event: "click",
+        duration: 3000, //播放频率
+        speed: 500, //滚动速度
+        auto: true //是否自动播放
+    });
 
-
-
+});
+```js
 
 
 ## Release History
+
+2015-7-23&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp;
+增加了zSlider模块，require.js，main.js和zSlider_v2.html
+```html
+<br>
+```
 2015-7-17&nbsp;&nbsp;&nbsp;v0.0.3&nbsp;&nbsp;&nbsp; Optimization
 ```html
 <br>
